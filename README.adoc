@@ -1,0 +1,29 @@
+== About
+This test case reproduces an error when using collection interface classes in enum constructors.
+
+This test was originally written against `com.thoughtworks.qdox:qdox:2.0-M5` as it was discovered in conjunction with
+`org.apache.maven.plugins.maven-plugin-plugin:3.5.1`.
+Now it uses `2.0-M8`, yielding the same result.
+
+Note that `src/main/java` was added as resource folder to make the source files accessible as resources.
+
+== Usage
+Call `mvn verify`.
+
+== Error
+The following error will be shown in the test results:
+```
+com.thoughtworks.qdox.parser.ParseException: syntax error @[7,20] in file:/(...)/qdox-class-in-enum-constructor-testcase/target/classes/org/example/SomeEnum.java
+	at com.thoughtworks.qdox.parser.impl.Parser.yyerror(Parser.java:1768)
+	at com.thoughtworks.qdox.parser.impl.Parser.yyparse(Parser.java:1890)
+	at com.thoughtworks.qdox.parser.impl.Parser.parse(Parser.java:1749)
+	at com.thoughtworks.qdox.library.SourceLibrary.parse(SourceLibrary.java:232)
+	at com.thoughtworks.qdox.library.SourceLibrary.parse(SourceLibrary.java:190)
+	at com.thoughtworks.qdox.library.SourceLibrary.addSource(SourceLibrary.java:94)
+	at com.thoughtworks.qdox.library.SourceLibrary.addSource(SourceLibrary.java:136)
+	at com.thoughtworks.qdox.library.SortedClassLibraryBuilder.addSource(SortedClassLibraryBuilder.java:168)
+	at com.thoughtworks.qdox.JavaProjectBuilder.addSource(JavaProjectBuilder.java:163)
+	at org.example.TestClassInEnumConstructor.testClassInEnumConstructor(TestClassInEnumConstructor.java:17)
+```
+
+The test for the `ClassBasedEnum` does not result in an error.
